@@ -3,6 +3,18 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
+for (const storageKey of ['localStorage', 'sessionStorage']) {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, storageKey);
+
+  if (descriptor?.configurable) {
+    Object.defineProperty(globalThis, storageKey, {
+      value: undefined,
+      configurable: true,
+      writable: true
+    });
+  }
+}
+
 module.exports = {
   entry: path.resolve(__dirname, './src/index.tsx'),
   module: {
@@ -83,12 +95,15 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/'
   },
   devServer: {
     static: path.join(__dirname, './dist'),
     compress: true,
-    historyApiFallback: true,
+    historyApiFallback: {
+      index: '/index.html'
+    },
     port: 4000,
     open: true
   }
