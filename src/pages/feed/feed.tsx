@@ -3,6 +3,7 @@ import { FeedUI } from '@ui-pages';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { getFeeds } from '../../services/slices/ordersSlice';
+import { ORDERS_REFRESH_INTERVAL } from '../../utils/constants';
 
 export const Feed: FC = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,10 @@ export const Feed: FC = () => {
 
   useEffect(() => {
     handleGetFeeds();
-    const interval = window.setInterval(handleGetFeeds, 30000);
+    const interval = window.setInterval(
+      handleGetFeeds,
+      ORDERS_REFRESH_INTERVAL
+    );
 
     return () => {
       window.clearInterval(interval);

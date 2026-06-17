@@ -2,6 +2,7 @@ import { ProfileOrdersUI } from '@ui-pages';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { getProfileOrders } from '../../services/slices/ordersSlice';
+import { ORDERS_REFRESH_INTERVAL } from '../../utils/constants';
 
 export const ProfileOrders: FC = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ export const ProfileOrders: FC = () => {
     dispatch(getProfileOrders());
     const interval = window.setInterval(() => {
       dispatch(getProfileOrders());
-    }, 30000);
+    }, ORDERS_REFRESH_INTERVAL);
 
     return () => {
       window.clearInterval(interval);

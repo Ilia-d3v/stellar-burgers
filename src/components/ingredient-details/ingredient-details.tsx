@@ -4,7 +4,13 @@ import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
 import { useSelector } from '../../services/store';
 
-export const IngredientDetails: FC = () => {
+type TIngredientDetailsProps = {
+  showTitle?: boolean;
+};
+
+export const IngredientDetails: FC<TIngredientDetailsProps> = ({
+  showTitle = false
+}) => {
   const { id } = useParams();
   const ingredientData = useSelector((state) =>
     state.ingredients.items.find((ingredient) => ingredient._id === id)
@@ -14,5 +20,10 @@ export const IngredientDetails: FC = () => {
     return <Preloader />;
   }
 
-  return <IngredientDetailsUI ingredientData={ingredientData} />;
+  return (
+    <IngredientDetailsUI
+      ingredientData={ingredientData}
+      showTitle={showTitle}
+    />
+  );
 };

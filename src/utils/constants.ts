@@ -1,0 +1,1 @@
+export const ORDERS_REFRESH_INTERVAL = 30000;

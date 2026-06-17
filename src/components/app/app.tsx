@@ -1,11 +1,12 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import {
   Location,
   Navigate,
   Route,
   Routes,
   useLocation,
-  useNavigate
+  useNavigate,
+  useParams
 } from 'react-router-dom';
 import {
   ConstructorPage,
@@ -36,6 +37,23 @@ type TLocationState = {
   background?: Location;
 };
 
+type TOrderModalProps = {
+  onClose: () => void;
+};
+
+const getOrderTitle = (number?: string) =>
+  number ? `#${String(number).padStart(6, '0')}` : '';
+
+const OrderModal: FC<TOrderModalProps> = ({ onClose }) => {
+  const { number } = useParams();
+
+  return (
+    <Modal title={getOrderTitle(number)} onClose={onClose}>
+      <OrderInfo />
+    </Modal>
+  );
+};
+
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -58,7 +76,10 @@ const App = () => {
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
         <Route path='/feed/:number' element={<OrderInfo />} />
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route
+          path='/ingredients/:id'
+          element={<IngredientDetails showTitle />}
+        />
         <Route
           path='/login'
           element={
@@ -131,19 +152,13 @@ const App = () => {
           />
           <Route
             path='/feed/:number'
-            element={
-              <Modal title='' onClose={closeModal}>
-                <OrderInfo />
-              </Modal>
-            }
+            element={<OrderModal onClose={closeModal} />}
           />
           <Route
             path='/profile/orders/:number'
             element={
               <ProtectedRoute>
-                <Modal title='' onClose={closeModal}>
-                  <OrderInfo />
-                </Modal>
+                <OrderModal onClose={closeModal} />
               </ProtectedRoute>
             }
           />
