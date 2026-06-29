@@ -1,10 +1,23 @@
 import { ProfileOrdersUI } from '@ui-pages';
-import { TOrder } from '@utils-types';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { useDispatch, useSelector } from '../../services/store';
+import { getProfileOrders } from '../../services/slices/ordersSlice';
+import { ORDERS_REFRESH_INTERVAL } from '../../utils/constants';
 
 export const ProfileOrders: FC = () => {
-  /** TODO: взять переменную из стора */
-  const orders: TOrder[] = [];
+  const dispatch = useDispatch();
+  const orders = useSelector((state) => state.orders.profileOrders);
+
+  useEffect(() => {
+    dispatch(getProfileOrders());
+    const interval = window.setInterval(() => {
+      dispatch(getProfileOrders());
+    }, ORDERS_REFRESH_INTERVAL);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [dispatch]);
 
   return <ProfileOrdersUI orders={orders} />;
 };

@@ -9,7 +9,9 @@
 .elements {
   min-height: 100px;
 
-  overflow-y: scroll;
+  overflow-y: auto;
+  scrollbar-color: #8585ad #2f2f37;
+  scrollbar-width: thin;
   list-style-type: none;
   margin: 0;
   padding: 0;
