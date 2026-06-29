@@ -66,7 +66,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html'
     }),
-    new Dotenv()
+    new Dotenv({ silent: true })
   ],
   resolve: {
     extensions: [
@@ -105,6 +105,6 @@ module.exports = {
       index: '/index.html'
     },
     port: 4000,
-    open: true
+    open: false
   }
 };
